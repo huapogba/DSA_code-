@@ -1,0 +1,53 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+class hashtable
+{
+    int size;
+    vector<int> table ;
+    int hash(int k){
+       return k % size;}
+    int rehash(int k,int i){
+       return (hash(k) + i*i ) % size;}
+public:
+    hashtable(int size):size(size),table(size,-1){}
+    bool insert(int k);
+    void emptylost();
+};
+bool hashtable::insert(int k){
+   for(int i=0;i<size;i++){
+    int pos=rehash(k,i);
+    if(table[pos]==-1){
+            table[pos]=k;
+            return true;
+    }
+   }
+   return false;
+}
+void hashtable::emptylost()
+{
+    for(int i=0;i<size;i++){
+        if(table[i]==-1){
+            cout<<i<<endl;
+        }
+    }
+}
+int main ()
+{
+    int n,m;
+    vector <int> a;
+    cin>>m>>n;
+    hashtable ht(m);
+    for(int i=0;i<n;i++){
+        int k;
+        cin>>k;
+        if(ht.insert(k)==false){
+            a.push_back(k);
+        }
+    }
+    for(int i=0;i<a.size();i++){
+        cout<<a[i]<<" FULL"<<endl;
+    }
+    ht.emptylost();
+    return 0;
+}
