@@ -1,0 +1,149 @@
+#include<iostream>
+using namespace std;
+class Lnode
+{
+public:
+    int data;
+    Lnode* next;
+    Lnode(int data):data(data),next(NULL){}
+};
+class List
+{
+public:
+    Lnode* head;
+    Lnode* tail;
+    List():head(NULL),tail(NULL){}
+    Lnode* Create_node(int );
+    void add_first(Lnode*);
+    void add_last(Lnode* );
+    void print();
+};
+Lnode* List::Create_node(int x)
+{
+    Lnode* a=new Lnode(x);
+    return a;
+}
+void List::add_first(Lnode* a)
+{
+    if(head==NULL){
+        head=a;
+        tail=a;
+        return;
+    } else {
+        a->next=head;
+        head=a;
+    }
+}
+void List::add_last(Lnode* a)
+{
+    if(head==NULL){
+        head=a;
+        tail=a;
+        return;
+    } else {
+        tail->next=a;
+        tail=a;
+    }
+}
+void List::print()
+{
+    Lnode* p=head;
+    while(p!=NULL){
+        cout<<p->data<<" ";
+        p=p->next;
+    }
+}
+class Tnode
+{
+public:
+    int data;
+    Tnode* left;
+    Tnode* right;
+    Tnode(int data):data(data),right(NULL),left(NULL){}
+};
+class Tree
+{
+public:
+    Tnode* root=NULL;
+    Tnode* insert(Tnode* ,int);
+    int height(Tnode*);
+};
+Tnode* Tree::insert(Tnode* root,int x)
+{
+     if(root==NULL){
+        return new Tnode(x);
+     }
+     if(x<root->data){
+        if(root->left==NULL){
+            root->left=new Tnode(x);
+        } else {
+            root->left=insert(root->left,x);
+        }
+     }
+     if(x>root->data){
+        if(root->right==NULL){
+            root->right=new Tnode(x);
+        } else {
+            root->right=insert(root->right,x);
+        }
+     }
+     return root;
+}
+int Tree::height(Tnode* root)
+{
+    if(root==NULL){
+        return 0;
+    }
+    int a=height(root->left);
+    int b=height(root->right);
+    if(a>b){
+        return a+1;
+    } else {
+        return b+1;
+    }
+}
+int main ()
+{
+    List l;
+    int x,y,z;
+    while(x!=3){
+        cin>>x;
+        if(x==0){
+            cin>>y;
+            l.add_first(l.Create_node(y));
+        }
+        if(x==1){
+            cin>>y;
+            l.add_last(l.Create_node(y));
+        }
+        if(x==2){
+            cin>>y>>z;
+            Lnode* p=l.head;
+            while(p!=NULL){
+                if(p->data==y){
+                if( p==l.tail){
+                    l.add_last(l.Create_node(z));
+                    break;
+                  } else {
+                    Lnode* q=l.Create_node(z);
+                    q->next=p->next;
+                    p->next=q;
+                    break;
+                    }
+                }
+                p=p->next;
+            }
+            if(p==NULL){
+               l.add_first(l.Create_node(z));
+            }
+        }
+    }
+    Tree t;
+    Lnode*p=l.head;
+    while(p!=NULL){
+        t.root=t.insert(t.root,p->data);
+        p=p->next;
+    }
+    cout<<t.height(t.root)<<endl;
+    return 0;
+}
