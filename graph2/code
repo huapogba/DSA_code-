@@ -1,0 +1,37 @@
+#include<iostream>
+using namespace std;
+const int MAX=1000;
+int n,m;
+bool danh_dau[MAX][MAX]={false};
+bool tham[MAX]={false};
+void DFS(int u)
+{
+    for(int v=0;v<m;v++){
+        if(danh_dau[u][v]==true && tham[v]==false){
+            tham[v]=true;
+            DFS(v);
+        }
+    }
+}
+int main()
+{
+    cin>>m>>n;
+    for(int i=0;i<n;i++){
+        int u,v;
+        cin>>u>>v;
+        danh_dau[u][v]=danh_dau[v][u]=true;
+    }
+    tham[0]=true;
+    DFS(0);
+    bool found=false;
+    for(int i=1;i<m;i++){
+        if(tham[i]==true){
+            cout<<i<<" ";
+            found=true;
+        }
+    }
+    if(found==false){
+        cout<<"KHONG"<<endl;
+    }
+    return 0;
+}
